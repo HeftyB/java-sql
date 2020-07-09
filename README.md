@@ -266,7 +266,7 @@ Table Name: People
 
 Table Name: Pets
 
-|pet_id      |pet_name    |person_id   |pet_type    |            |            |            |            |            |
+|pet_id      |pet_name    |person_id   |pet_type_id |            |            |            |            |            |
 |------------|------------|------------|------------|------------|------------|------------|------------|------------|
 |      0     |Ellie       |      0     |      0     |            |            |            |            |            |
 |      1     |Joe         |      1     |      1     |            |            |            |            |            |
