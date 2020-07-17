@@ -31,6 +31,11 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 
 * [ ] ***find all customers that live in London. Returns 6 records***
 
+`SELECT *
+FROM customers
+WHERE city = 'London'`
+
+
   <details><summary>hint</summary>
 
   * This can be done with SELECT and WHERE clauses
@@ -41,6 +46,11 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 ```
 
 * [ ] ***find all customers with postal code 1010. Returns 3 customers***
+
+
+`SELECT *
+FROM customers
+WHERE postal_code = '1010''
 
   <details><summary>hint</summary>
 
@@ -53,6 +63,12 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 
 * [ ] ***find the phone number for the supplier with the id 11. Should be (010) 9984510***
 
+
+`SELECT phone
+FROM suppliers
+WHERE supplier_id = '11'`
+
+
   <details><summary>hint</summary>
 
   * This can be done with SELECT and WHERE clauses
@@ -63,6 +79,12 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 ```
 
 * [ ] ***list orders descending by the order date. The order with date 1998-05-06 should be at the top***
+
+`SELECT *
+FROM orders
+ORDER BY order_date DESC`
+
+
 
   <details><summary>hint</summary>
 
@@ -75,6 +97,12 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 
 * [ ] ***find all suppliers who have names longer than 20 characters. Returns 11 records***
 
+
+`SELECT *
+FROM suppliers
+WHERE length(company_name) > 20`
+
+
   <details><summary>hint</summary>
 
   * This can be done with SELECT and WHERE clauses
@@ -86,6 +114,12 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 ```
 
 * [ ] ***find all customers that include the word 'MARKET' in the contact title. Should return 19 records***
+
+`SELECT *
+FROM customers
+WHERE contact_title LIKE 'Market%'`
+
+
 
   <details><summary>hint</summary>
 
@@ -106,6 +140,12 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 * the city is 'Bag End'
 * the postal code is '111'
 * the country is 'Middle Earth'
+
+
+`INSERT INTO customers(customer_id, company_name, contact_name, address, city, postal_code, country)
+VALUES ('SHIRE', 'THE SHIRE', 'Bilbo Baggins', '1 HOBBIT-HOLE', 'BAGEND', '111', 'MIDDLE EARTH')`
+
+
   <details><summary>hint</summary>
 
   * This can be done with the INSERT INTO clause
@@ -117,6 +157,13 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 
 * [ ] ***update _Bilbo Baggins_ record so that the postal code changes to _"11122"_***
 
+
+`UPDATE customers
+SET postal_code = '11122'
+WHERE contact_name = 'Bilbo Baggins'`
+
+
+
   <details><summary>hint</summary>
 
   * This can be done with UPDATE and WHERE clauses
@@ -127,6 +174,15 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 ```
 
 * [ ] ***list orders grouped and ordered by customer company name showing the number of orders per customer company name. _Rattlesnake Canyon Grocery_ should have 18 orders***
+
+
+
+`SELECT c.company_name, count(DISTINCT order_id)
+FROM customers c JOIN orders o
+ON  c.customer_id = o.customer_id
+GROUP BY c.company_name`
+
+
 
   <details><summary>hint</summary>
 
@@ -140,6 +196,15 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 
 * [ ] ***list customers by contact name and the number of orders per contact name. Sort the list by the number of orders in descending order. _Jose Pavarotti_ should be at the top with 31 orders followed by _Roland Mendal_ with 30 orders. Last should be _Francisco Chang_ with 1 order***
 
+
+`SELECT c.contact_name, count(DISTINCT order_id) as ordercount
+FROM customers c JOIN orders o
+ON  c.customer_id = o.customer_id
+GROUP BY c.contact_name
+ORDER BY ordercount DESC`
+
+
+
   <details><summary>hint</summary>
 
   * This can be done by adding an ORDER BY clause to the previous answer and changing the group by field
@@ -150,6 +215,16 @@ Reimport the Northwind database into PostgreSQL using pgAdmin. This is the same 
 ```
 
 * [ ] ***list orders grouped by customer's city showing the number of orders per city. Returns 69 Records with _Aachen_ showing 6 orders and _Albuquerque_ showing 18 orders***
+
+
+
+`SELECT c.city, count(DISTINCT order_id) as ordercount
+FROM customers c JOIN orders o
+ON  c.customer_id = o.customer_id
+GROUP BY c.city
+ORDER BY ordercount DESC`
+
+
 
   <details><summary>hint</summary>
 
@@ -177,39 +252,39 @@ Below are some empty tables to be used to normalize the database
 * Not all of the cells will contain data in the final solution
 * Feel free to edit these tables as necessary
 
-Table Name:
+Table Name: People
 
-|            |            |            |            |            |            |            |            |            |
+|person_id   |person_name |fenced_yard |city_dweller|            |            |            |            |            |
 |------------|------------|------------|------------|------------|------------|------------|------------|------------|
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
+|      0     |Jane        |false       |true        |            |            |            |            |            |
+|      1     |Bob         |false       |false       |            |            |            |            |            |
+|      2     |Sam         |true        |false       |            |            |            |            |            |
 |            |            |            |            |            |            |            |            |            |
 |            |            |            |            |            |            |            |            |            |
 |            |            |            |            |            |            |            |            |            |
 |            |            |            |            |            |            |            |            |            |
 
-Table Name:
+Table Name: Pets
 
-|            |            |            |            |            |            |            |            |            |
+|pet_id      |pet_name    |person_id   |pet_type_id |            |            |            |            |            |
 |------------|------------|------------|------------|------------|------------|------------|------------|------------|
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
+|      0     |Ellie       |      0     |      0     |            |            |            |            |            |
+|      1     |Joe         |      1     |      1     |            |            |            |            |            |
+|      2     |Ginger      |      2     |      0     |            |            |            |            |            |
+|      3     |Tiger       |      0     |      2     |            |            |            |            |            |
+|      4     |Miss Kitty  |      2     |      2     |            |            |            |            |            |
+|      5     |Toby        |      0     |      3     |            |            |            |            |            |
+|      6     |Bubble      |      2     |      4     |            |            |            |            |            |
 
-Table Name:
+Table Name: Pet Types
 
-|            |            |            |            |            |            |            |            |            |
+|pet_type_id |pet_type    |            |            |            |            |            |            |            |
 |------------|------------|------------|------------|------------|------------|------------|------------|------------|
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
-|            |            |            |            |            |            |            |            |            |
+|      0     |Dog         |            |            |            |            |            |            |            |
+|      1     |Horse       |            |            |            |            |            |            |            |
+|      2     |Cat         |            |            |            |            |            |            |            |
+|      3     |Turtle      |            |            |            |            |            |            |            |
+|      4     |Fish        |            |            |            |            |            |            |            |
 |            |            |            |            |            |            |            |            |            |
 |            |            |            |            |            |            |            |            |            |
 
